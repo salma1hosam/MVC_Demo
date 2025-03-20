@@ -6,29 +6,34 @@ namespace Demo.Presentation
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddControllersWithViews();
+			#region Add services to the container.
+			builder.Services.AddControllersWithViews(); 
+			#endregion
 
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
+			#region Configure the HTTP request pipeline. (Middlewares)
+
 			if (!app.Environment.IsDevelopment())
 			{
 				app.UseExceptionHandler("/Home/Error");
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
+				app.UseHsts(); //Makes sure that all the requests are secured (under the Https protocol) in deployment phase
 			}
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			app.UseHttpsRedirection();  //Redirect the Http protocol to be Https
+			
+			app.UseStaticFiles();  //Routing to the static files (to wwwroot)
 
-			app.UseRouting();
+			app.UseRouting();  //Map the request to route of the routes in the Routing Table
 
 			app.UseAuthorization();
 
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			#endregion
 
 			app.Run();
 		}
