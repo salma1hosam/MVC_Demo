@@ -1,4 +1,5 @@
 using Demo.DataAccess.Data.Contexts;
+using Demo.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Presentation
@@ -23,6 +24,8 @@ namespace Demo.Presentation
 				
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  //Most Used
 			});
+
+			builder.Services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //2.Registeration
 			#endregion
 
 			var app = builder.Build();
