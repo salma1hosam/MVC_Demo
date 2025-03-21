@@ -3,14 +3,9 @@ using System.Reflection;
 
 namespace Demo.DataAccess.Data.Contexts
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 	{
-		//Using DI to Configure the options
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            
-        }
-        public DbSet<Department> Departments { get; set; }
+		public DbSet<Department> Departments { get; set; }
 
 		#region Configuring the options (DbContextOptionBuilder) through OnConfiguring method [Without Dependancy Injection]
 		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
