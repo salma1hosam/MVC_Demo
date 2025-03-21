@@ -1,3 +1,6 @@
+using Demo.DataAccess.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace Demo.Presentation
 {
 	public class Program
@@ -7,7 +10,19 @@ namespace Demo.Presentation
 			var builder = WebApplication.CreateBuilder(args);
 
 			#region Add services to the container.
-			builder.Services.AddControllersWithViews(); 
+			builder.Services.AddControllersWithViews();
+
+			//builder.Services.AddScoped<ApplicationDbContext>();  //2.Register to Service in the DI Container
+
+			//Another way to register the DbContext service with configuring the DBContextOptions
+			builder.Services.AddDbContext<ApplicationDbContext>(options =>
+			{
+				//3 Ways to get the Connection String from the appsettings.json
+				//options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+				//options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"]);  //Used to get any Section in the appsettings.json
+				
+				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  //Most Used
+			});
 			#endregion
 
 			var app = builder.Build();
@@ -22,7 +37,7 @@ namespace Demo.Presentation
 			}
 
 			app.UseHttpsRedirection();  //Redirect the Http protocol to be Https
-			
+
 			app.UseStaticFiles();  //Routing to the static files (to wwwroot)
 
 			app.UseRouting();  //Map the request to route of the routes in the Routing Table
