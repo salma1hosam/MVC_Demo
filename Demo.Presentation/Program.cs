@@ -1,3 +1,4 @@
+using Demo.BusinessLogic.Services;
 using Demo.DataAccess.Data.Contexts;
 using Demo.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace Demo.Presentation
 			});
 
 			builder.Services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //2.Registeration
+			builder.Services.AddScoped<IDepartmentService , DepartmentService>();
 			#endregion
 
 			var app = builder.Build();
