@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.DataAccess.Models
+namespace Demo.DataAccess.Models.Shared
 {
-	public class BaseEntity
-	{
+    public class BaseEntity
+    {
         public int Id { get; set; } //PK
         public int CreatedBy { get; set; } //User Id
         public DateTime CreatedOn { get; set; }

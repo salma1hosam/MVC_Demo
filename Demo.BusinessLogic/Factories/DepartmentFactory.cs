@@ -1,5 +1,5 @@
 ﻿using Demo.BusinessLogic.DataTransferObjects;
-using Demo.DataAccess.Models;
+using Demo.DataAccess.Models.DepartmentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.BusinessLogic.Factories
 {
-	public static class DepartmentFactory
+    public static class DepartmentFactory
 	{
 		//Extension Method Mapping
 		public static DepartmentDto ToDepartmentDto(this Department D)

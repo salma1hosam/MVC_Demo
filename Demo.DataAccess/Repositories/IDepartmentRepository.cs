@@ -1,7 +1,9 @@
 ﻿
+using Demo.DataAccess.Models.DepartmentModel;
+
 namespace Demo.DataAccess.Repositories
 {
-	public interface IDepartmentRepository
+    public interface IDepartmentRepository
 	{
 		int Add(Department department);
 		IEnumerable<Department> GetAll(bool withTracking = false);

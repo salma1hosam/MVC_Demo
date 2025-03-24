@@ -1,9 +1,10 @@
 ﻿using Demo.DataAccess.Data.Contexts;
+using Demo.DataAccess.Models.DepartmentModel;
 
 
 namespace Demo.DataAccess.Repositories
 {
-	public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
 	{
 		private readonly ApplicationDbContext _dbContext;  // _ is the naming convention of DI 
 
