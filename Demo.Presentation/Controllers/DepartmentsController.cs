@@ -129,5 +129,54 @@ namespace Demo.Presentation.Controllers
             return View(viewModel);
         }
         #endregion
+
+        #region MyRegion
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (!id.HasValue)
+                return BadRequest();
+            var department = _departmentService.GetDepartmentById(id.Value);
+            if (department is null)
+                return NotFound();
+            return View(department);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            try
+            {
+                bool isDeleted = _departmentService.DeleteDepartment(id);
+                if (isDeleted)
+                    return RedirectToAction(nameof(Index));
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Department Is Not Deleted");
+                    return RedirectToAction(nameof(Delete), new { Id = id });
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log Exception In:
+                //Develpment => Log Error in Console (Allready Done By Default) and return the same View with Error Message.
+                if (_environment.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return RedirectToAction(nameof(Index));
+                }
+                //Deployment => Log Error in a File Or Table in Databse and return Error View Based on the error type.
+                else
+                {
+                    _logger.LogError(ex.Message);
+                    return View("ErrorView", ex);
+                }
+            }
+        }
+        #endregion
     }
 }
