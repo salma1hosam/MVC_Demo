@@ -5,9 +5,9 @@
 
 <h1 class="my-3">All Departments</h1>
 
-<a class="btn btn-primary my-3" asp-controller="Departemnts" asp-action="Create">Create New Department</a>
+<a class="btn btn-primary my-3" asp-controller="Departments" asp-action="Create">Create New Department</a>
 
-@if(Model.Any())  //Model -> Property that represents the rendered model
+@if(Model?.Any() ?? false)  //Model -> Property that represents the rendered model
 {
     <table class="table table-striped table-hover mt-2">
         <thead class="text-center">
