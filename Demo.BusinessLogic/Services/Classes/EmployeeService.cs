@@ -19,15 +19,21 @@ namespace Demo.BusinessLogic.Services.Classes
             _employeeRepository = employeeRepository;
         }
 
-        public int AddEmployee(CreatedEmployeeDto createdEmployeeDto)
+        public int CreateEmployee(CreatedEmployeeDto createdEmployeeDto)
         {
             var employee = createdEmployeeDto.ToEntity();
             return _employeeRepository.Add(employee);
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployees()
+
+        public bool DeleteEmployee(int id)
         {
-            var employees = _employeeRepository.GetAll();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
+        {
+            var employees = _employeeRepository.GetAll(withTracking);
             return employees.Select(E => E.ToEmployeeDto());
         }
 

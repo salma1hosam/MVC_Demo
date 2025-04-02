@@ -17,11 +17,11 @@ namespace Demo.BusinessLogic.Factories
                 Id = employee.Id,
                 Name = employee.Name,
                 Age = employee.Age,
-                IsActived = employee.IsActived,
+                IsActive = employee.IsActived,
                 Email = employee.Email,
                 Salary = employee.Salary,
-                Gender = employee.Gender,
-                EmployeeType = employee.EmployeeType
+                Gender = employee.Gender.ToString(),
+                EmployeeType = employee.EmployeeType.ToString()
             };
         }
 
@@ -29,17 +29,21 @@ namespace Demo.BusinessLogic.Factories
         {
             return new EmployeeDetailsDto()
             {
-                Id= employee.Id,
+                Id = employee.Id,
                 Name = employee.Name,
                 Age = employee.Age,
                 Address = employee.Address,
-                IsActived= employee.IsActived,
-                Salary= employee.Salary,
-                Email= employee.Email,
+                IsActive = employee.IsActived,
+                Salary = employee.Salary,
+                Email = employee.Email,
                 PhoneNumber = employee.PhoneNumber,
-                HiringDate = employee.HiringDate,
-                Gender= employee.Gender,
-                EmployeeType = employee.EmployeeType
+                HiringDate = DateOnly.FromDateTime(employee.HiringDate),
+                Gender= employee.Gender.ToString(),
+                EmployeeType = employee.EmployeeType.ToString(),
+                CreatedBy = 1,
+                CreatedOn = employee.CreatedOn,
+                LastModifiedBy = 1,
+                LastModifiedOn = employee.LastModifiedOn
             };
         }
 
