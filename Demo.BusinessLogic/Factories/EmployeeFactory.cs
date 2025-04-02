@@ -20,8 +20,8 @@ namespace Demo.BusinessLogic.Factories
                 IsActive = employee.IsActived,
                 Email = employee.Email,
                 Salary = employee.Salary,
-                Gender = employee.Gender.ToString(),
-                EmployeeType = employee.EmployeeType.ToString()
+                EmpGender = employee.Gender.ToString(),
+                EmpType = employee.EmployeeType.ToString()
             };
         }
 
@@ -47,43 +47,6 @@ namespace Demo.BusinessLogic.Factories
             };
         }
 
-        public static Employee ToEntity(this CreatedEmployeeDto createdEmployeeDto)
-        {
-            return new Employee()
-            {
-                Name = createdEmployeeDto.Name,
-                Age = createdEmployeeDto.Age,
-                Address = createdEmployeeDto.Address,
-                IsActived = createdEmployeeDto.IsActived,
-                Salary = createdEmployeeDto.Salary,
-                Email = createdEmployeeDto.Email,
-                PhoneNumber = createdEmployeeDto.PhoneNumber,
-                HiringDate = createdEmployeeDto.HiringDate,
-                Gender = createdEmployeeDto.Gender,
-                EmployeeType = createdEmployeeDto.EmployeeType,
-                CreatedBy = createdEmployeeDto.CreatedBy,
-                LastModifiedBy = createdEmployeeDto.LastModifiedBy
-            };
-        }
-
-        public static Employee ToEntity(this UpdatedEmployeeDto updatedEmployeeDto)
-        {
-            return new Employee()
-            {
-                Id = updatedEmployeeDto.Id,
-                Name = updatedEmployeeDto.Name,
-                Age = updatedEmployeeDto.Age,
-                Address = updatedEmployeeDto.Address,
-                IsActived = updatedEmployeeDto.IsActived,
-                Salary = updatedEmployeeDto.Salary,
-                Email = updatedEmployeeDto.Email,
-                PhoneNumber = updatedEmployeeDto.PhoneNumber,
-                HiringDate = updatedEmployeeDto.HiringDate,
-                Gender = updatedEmployeeDto.Gender,
-                EmployeeType = updatedEmployeeDto.EmployeeType,
-                CreatedBy = updatedEmployeeDto.CreatedBy,
-                LastModifiedBy = updatedEmployeeDto.LastModifiedBy
-            };
-        }
+        
     }
 }
