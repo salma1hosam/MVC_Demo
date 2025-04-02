@@ -11,7 +11,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Employee
         public int? Age { get; set; }
         public string? Address { get; set; }
         public decimal Salary { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActived { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public DateOnly HiringDate { get; set; }

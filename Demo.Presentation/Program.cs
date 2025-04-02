@@ -40,7 +40,7 @@ namespace Demo.Presentation
             builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly); //Gets the Assembly that contains the Mapping Profiles (if it's public)
             
 			//builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles())); //Add a profile using AddProfile and takes an object that inherit from Profile Base Class (if it's public) 
-            //																		         //(But you've to add each profile separatly if you've separet profile for each Module)
+            //																		    //(But you've to add each profile separatly if you've separet profile for each Module)
             
 			//builder.Services.AddAutoMapper(typeof(ProjectReference).Assembly); //An Empty Public Class exists in the same Assembly of the Profiles just to get the Assembly (In Case the Profiles are not public)
             #endregion

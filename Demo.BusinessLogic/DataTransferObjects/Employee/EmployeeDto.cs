@@ -13,7 +13,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Employee
         public decimal Salary { get; set; }
 
         [Display(Name = "Is Active")]
-        public bool IsActive { get; set; }
+        public bool IsActived { get; set; }
 
         [EmailAddress]
         public string? Email { get; set; }
