@@ -1,6 +1,7 @@
 ﻿using Demo.DataAccess.Data.Contexts;
 using Demo.DataAccess.Models.Shared;
 using Demo.DataAccess.Repositories.Interfaces;
+using System.Linq.Expressions;
 
 namespace Demo.DataAccess.Repositories.Classes
 {
@@ -18,6 +19,12 @@ namespace Demo.DataAccess.Repositories.Classes
                 return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).ToList();
             else
                 return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).AsNoTracking().ToList();
+        }
+
+        public IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true)
+                                            .Select(selector).ToList();        //ToList() to let it be Immitiate Execution
         }
 
         public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);  //Find() takes a PK as a parameter
