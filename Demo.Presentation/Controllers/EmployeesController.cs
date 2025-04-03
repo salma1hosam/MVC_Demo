@@ -22,6 +22,7 @@ namespace Demo.Presentation.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
+        //[ValidateAntiForgeryToken] //Action Filter (check for the token that submits the form in the request)
         public IActionResult Create(CreatedEmployeeDto createdEmployeeDto)
         {
             if(ModelState.IsValid)

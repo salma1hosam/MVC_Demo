@@ -4,6 +4,7 @@ using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Data.Contexts;
 using Demo.DataAccess.Repositories.Classes;
 using Demo.DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,11 @@ namespace Demo.Presentation
 			var builder = WebApplication.CreateBuilder(args);
 
 			#region Add services to the container.
-			builder.Services.AddControllersWithViews();
+			builder.Services.AddControllersWithViews(options =>
+			{
+                //All Actions will be checked for the token that submits the form in the request by AutoValidateAntiforgeryTokenAttribute
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+			});
 
 			//builder.Services.AddScoped<ApplicationDbContext>();  //2.Register to Service in the DI Container
 
