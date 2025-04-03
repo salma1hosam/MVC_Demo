@@ -24,7 +24,7 @@ namespace Demo.DataAccess.Repositories.Classes
         public IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity, TResult>> selector)
         {
             return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true)
-                                            .Select(selector).ToList();        //ToList() to let it be Immitiate Execution
+                                            .Select(selector).ToList();        //ToList() to let it be Immidiate Execution
         }
 
         public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);  //Find() takes a PK as a parameter

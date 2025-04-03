@@ -45,13 +45,13 @@ namespace Demo.BusinessLogic.Services.Classes
                 Name = E.Name,
                 Age = E.Age,
                 Salary = E.Salary
-            }).Where(E => E.Age > 25);
-            
+            }).Where(E => E.Age > 25); // IEnumerable Where() => Filteration on the returned Result in the Memory
+
 
             //Source => Employee
             //Destination => EmployeeDto
             //var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
-            
+
             return employeesDto;
         }
 
