@@ -1,4 +1,5 @@
 ﻿using Demo.DataAccess.Models.Shared;
+using System.Linq.Expressions;
 
 
 namespace Demo.DataAccess.Repositories.Interfaces
@@ -7,6 +8,7 @@ namespace Demo.DataAccess.Repositories.Interfaces
     {
         int Add(TEntity entity);
         IEnumerable<TEntity> GetAll(bool withTracking = false);
+        IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity, TResult>> selector);
         TEntity? GetById(int id);
         int Remove(TEntity entity);
         int Update(TEntity entity);

@@ -1,8 +1,11 @@
+using Demo.BusinessLogic.Profiles;
 using Demo.BusinessLogic.Services.Classes;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Data.Contexts;
 using Demo.DataAccess.Repositories.Classes;
 using Demo.DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Presentation
@@ -14,7 +17,11 @@ namespace Demo.Presentation
 			var builder = WebApplication.CreateBuilder(args);
 
 			#region Add services to the container.
-			builder.Services.AddControllersWithViews();
+			builder.Services.AddControllersWithViews(options =>
+			{
+                //All Actions will be checked for the token that submits the form in the request by AutoValidateAntiforgeryTokenAttribute
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+			});
 
 			//builder.Services.AddScoped<ApplicationDbContext>();  //2.Register to Service in the DI Container
 
@@ -33,9 +40,17 @@ namespace Demo.Presentation
 
 			builder.Services.AddScoped<IEmployeeRepository , EmployeeRepository>();
 			builder.Services.AddScoped<IEmployeeService , EmployeeService>();
-			#endregion
 
-			var app = builder.Build();
+            //Registering AutoMapper
+            builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly); //Gets the Assembly that contains the Mapping Profiles (if it's public)
+            
+			//builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles())); //Add a profile using AddProfile and takes an object that inherit from Profile Base Class (if it's public) 
+            //																		    //(But you've to add each profile separatly if you've separet profile for each Module)
+            
+			//builder.Services.AddAutoMapper(typeof(ProjectReference).Assembly); //An Empty Public Class exists in the same Assembly of the Profiles just to get the Assembly (In Case the Profiles are not public)
+            #endregion
+
+            var app = builder.Build();
 
 			#region Configure the HTTP request pipeline. (Middlewares)
 

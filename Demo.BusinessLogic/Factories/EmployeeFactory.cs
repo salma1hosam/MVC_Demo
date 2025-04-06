@@ -17,11 +17,11 @@ namespace Demo.BusinessLogic.Factories
                 Id = employee.Id,
                 Name = employee.Name,
                 Age = employee.Age,
-                IsActived = employee.IsActived,
+				IsActived = employee.IsActived,
                 Email = employee.Email,
                 Salary = employee.Salary,
-                Gender = employee.Gender,
-                EmployeeType = employee.EmployeeType
+                EmpGender = employee.Gender.ToString(),
+                EmpType = employee.EmployeeType.ToString()
             };
         }
 
@@ -29,57 +29,24 @@ namespace Demo.BusinessLogic.Factories
         {
             return new EmployeeDetailsDto()
             {
-                Id= employee.Id,
+                Id = employee.Id,
                 Name = employee.Name,
                 Age = employee.Age,
                 Address = employee.Address,
-                IsActived= employee.IsActived,
-                Salary= employee.Salary,
-                Email= employee.Email,
+				IsActived = employee.IsActived,
+                Salary = employee.Salary,
+                Email = employee.Email,
                 PhoneNumber = employee.PhoneNumber,
-                HiringDate = employee.HiringDate,
-                Gender= employee.Gender,
-                EmployeeType = employee.EmployeeType
+                HiringDate = DateOnly.FromDateTime(employee.HiringDate),
+                Gender= employee.Gender.ToString(),
+                EmployeeType = employee.EmployeeType.ToString(),
+                CreatedBy = 1,
+                CreatedOn = employee.CreatedOn,
+                LastModifiedBy = 1,
+                LastModifiedOn = employee.LastModifiedOn
             };
         }
 
-        public static Employee ToEntity(this CreatedEmployeeDto createdEmployeeDto)
-        {
-            return new Employee()
-            {
-                Name = createdEmployeeDto.Name,
-                Age = createdEmployeeDto.Age,
-                Address = createdEmployeeDto.Address,
-                IsActived = createdEmployeeDto.IsActived,
-                Salary = createdEmployeeDto.Salary,
-                Email = createdEmployeeDto.Email,
-                PhoneNumber = createdEmployeeDto.PhoneNumber,
-                HiringDate = createdEmployeeDto.HiringDate,
-                Gender = createdEmployeeDto.Gender,
-                EmployeeType = createdEmployeeDto.EmployeeType,
-                CreatedBy = createdEmployeeDto.CreatedBy,
-                LastModifiedBy = createdEmployeeDto.LastModifiedBy
-            };
-        }
-
-        public static Employee ToEntity(this UpdatedEmployeeDto updatedEmployeeDto)
-        {
-            return new Employee()
-            {
-                Id = updatedEmployeeDto.Id,
-                Name = updatedEmployeeDto.Name,
-                Age = updatedEmployeeDto.Age,
-                Address = updatedEmployeeDto.Address,
-                IsActived = updatedEmployeeDto.IsActived,
-                Salary = updatedEmployeeDto.Salary,
-                Email = updatedEmployeeDto.Email,
-                PhoneNumber = updatedEmployeeDto.PhoneNumber,
-                HiringDate = updatedEmployeeDto.HiringDate,
-                Gender = updatedEmployeeDto.Gender,
-                EmployeeType = updatedEmployeeDto.EmployeeType,
-                CreatedBy = updatedEmployeeDto.CreatedBy,
-                LastModifiedBy = updatedEmployeeDto.LastModifiedBy
-            };
-        }
+        
     }
 }
