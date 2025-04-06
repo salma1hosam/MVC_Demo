@@ -24,12 +24,19 @@ namespace Demo.Presentation.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(CreatedDepartmentDto createdDepartmentDto)
+        public IActionResult Create(DepartmentViewModel departmentViewModel)
         {
             if (ModelState.IsValid) //Server-Side Validation
             {
                 try
                 {
+                    var createdDepartmentDto = new CreatedDepartmentDto()
+                    {
+                        Code = departmentViewModel.Code,
+                        Name = departmentViewModel.Name,
+                        Description = departmentViewModel.Description,
+                        CreatedOn = departmentViewModel.DateOfCreation
+                    };
                     int returnedRows = _departmentService.AddDepartment(createdDepartmentDto);
                     //Usually Not Done in the Create Action (Mostly in Update Action)
                     if (returnedRows > 0)
@@ -49,7 +56,7 @@ namespace Demo.Presentation.Controllers
                         _logger.LogError(ex.Message);
                 }
             }
-            return View(createdDepartmentDto);
+            return View(departmentViewModel);
         }
 
         #endregion
@@ -80,7 +87,7 @@ namespace Demo.Presentation.Controllers
             var department = _departmentService.GetDepartmentById(id.Value);
             if (department is null) return NotFound();
 
-            var departmentViewModel = new DepartmentEditViewModel()
+            var departmentViewModel = new DepartmentViewModel()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -92,7 +99,7 @@ namespace Demo.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int id , DepartmentEditViewModel viewModel)
+        public IActionResult Edit([FromRoute]int id , DepartmentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {

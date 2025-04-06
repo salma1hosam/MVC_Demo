@@ -39,20 +39,23 @@ namespace Demo.BusinessLogic.Services.Classes
 
         public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
         {
-            var employeesDto = _employeeRepository.GetAll(E => new EmployeeDto()
-            {
-                Id = E.Id,
-                Name = E.Name,
-                Age = E.Age,
-                Salary = E.Salary
-            }).Where(E => E.Age > 25); // IEnumerable Where() => Filteration on the returned Result in the Memory
+            var employees = _employeeRepository.GetAll();
 
+			#region Using 2nd Overload of GetAll()
+			//var employeesDto = _employeeRepository.GetAll(E => new EmployeeDto()
+			//{
+			//    Id = E.Id,
+			//    Name = E.Name,
+			//    Age = E.Age,
+			//    Salary = E.Salary
+			//}).Where(E => E.Age > 25); // IEnumerable Where() => Filteration on the returned Result in the Memory 
+			#endregion
 
-            //Source => Employee
-            //Destination => EmployeeDto
-            //var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
+			//Source => Employee
+			//Destination => EmployeeDto
+			var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
 
-            return employeesDto;
+			return employeesDto;
         }
 
         public EmployeeDetailsDto? GetEmployeeById(int id)

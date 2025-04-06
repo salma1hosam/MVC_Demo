@@ -57,8 +57,7 @@
         </div>
         <div class="form-group mb-3 col-6">
             <label class="form-label" asp-for="EmployeeType"></label>
-            <select asp-for="EmployeeType" asp-items="Html.GetEnumSelectList<EmployeeType>()"
-                    class="form-control">
+            <select asp-for="EmployeeType" asp-items="Html.GetEnumSelectList<EmployeeType>()" class="form-control">
                 <option value="">Select Employee Type</option>
             </select>
             <span asp-validation-for="EmployeeType" class="text-danger"></span>
@@ -67,6 +66,7 @@
             <input asp-for="IsActived" class="form-check-input" />
             <label class="col-form-label" asp-for="IsActived"></label>
         </div>
+        
         <div class="mt-4 m-auto">
             <input class="btn btn-success" type="submit" value="Save" />
             <a asp-controller="Employees" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
