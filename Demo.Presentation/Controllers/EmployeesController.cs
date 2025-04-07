@@ -96,7 +96,8 @@ namespace Demo.Presentation.Controllers
                 IsActived = employee.IsActived,
                 HiringDate = employee.HiringDate,
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
-                Gender = Enum.Parse<Gender>(employee.Gender)
+                Gender = Enum.Parse<Gender>(employee.Gender),
+                DepartmentId = employee.DepartmentId
             };
 
             return View(employeeViewModel);

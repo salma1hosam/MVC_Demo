@@ -33,6 +33,7 @@ namespace Demo.Presentation
 				//options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"]);  //Used to get any Section in the appsettings.json
 				
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  //Most Used
+				options.UseLazyLoadingProxies();
 			});
 
 			builder.Services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //2.Registeration
