@@ -20,7 +20,10 @@ namespace Demo.Presentation.Controllers
         #region Create Employee
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
         //[ValidateAntiForgeryToken] //Action Filter (check for the token that submits the form in the request)
@@ -41,7 +44,8 @@ namespace Demo.Presentation.Controllers
                         Salary = employeeViewModel.Salary,
                         IsActived = employeeViewModel.IsActived,
                         EmployeeType = employeeViewModel.EmployeeType,
-                        Gender = employeeViewModel.Gender
+                        Gender = employeeViewModel.Gender,
+                        DepartmentId = employeeViewModel.DepartmentId
                     };
                     int returnedRows = _employeeService.CreateEmployee(createdEmployeeDto);
                     if (returnedRows > 0)
@@ -101,7 +105,7 @@ namespace Demo.Presentation.Controllers
         [HttpPost]
         public IActionResult Edit([FromRoute] int? id , EmployeeViewModel employeeViewModel)
         {
-            if(!id.HasValue /*|| id != employeeViewModel.Id*/) return BadRequest();
+            if(!id.HasValue) return BadRequest();
             if(!ModelState.IsValid) return View(employeeViewModel);
             try
             {
@@ -117,7 +121,8 @@ namespace Demo.Presentation.Controllers
                     Salary= employeeViewModel.Salary,
                     IsActived = employeeViewModel.IsActived,
                     EmployeeType = employeeViewModel.EmployeeType,
-                    Gender = employeeViewModel.Gender
+                    Gender = employeeViewModel.Gender,
+                    DepartmentId = employeeViewModel.DepartmentId
                 };
                 int returnedRows = _employeeService.UpdateEmployee(updatedEmployeeDto);
                 if (returnedRows > 0)
@@ -125,7 +130,7 @@ namespace Demo.Presentation.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Employee Is Not Updated");
-                    return View(updatedEmployeeDto);
+                    return View(employeeViewModel);
                 }    
             }
             catch (Exception ex)
