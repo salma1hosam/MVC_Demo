@@ -14,9 +14,11 @@ namespace Demo.Presentation.Controllers
         [HttpGet] //Default
         public IActionResult Index()
         {
-            //Because the Key and Property are the Same , the Second will override the first [Because Both are stored in the Same Dictionary]
-            ViewData["Message"] = new DepartmentDto() { Name = "TestViewData"};
-            ViewBag.Message = new DepartmentDto() { Name = "TestViewBag"};
+            #region ViewData & ViewBag
+            ////Because the Key and Property are the Same , the Second will override the first [Because Both are stored in the Same Dictionary]
+            //ViewData["Message"] = new DepartmentDto() { Name = "TestViewData" };
+            //ViewBag.Message = new DepartmentDto() { Name = "TestViewBag" }; 
+            #endregion
 
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
@@ -43,11 +45,15 @@ namespace Demo.Presentation.Controllers
                     };
                     int returnedRows = _departmentService.AddDepartment(createdDepartmentDto);
                     //Usually Not Done in the Create Action (Mostly in Update Action)
+                    string message;
                     if (returnedRows > 0)
-                        //return View(nameof(Index) , _departmentService.GetAllDepartments());
-                        return RedirectToAction(nameof(Index));
+                        message = $"Department {departmentViewModel.Name} Is Created Successfully";
                     else
-                        ModelState.AddModelError(string.Empty, "Department Can't Be Created");
+                        message = $"Department {departmentViewModel.Name} Could Not Be Created";
+
+                    TempData["Message"] = message;
+                    //return View(nameof(Index) , _departmentService.GetAllDepartments());
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
