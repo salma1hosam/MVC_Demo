@@ -14,6 +14,10 @@ namespace Demo.Presentation.Controllers
         [HttpGet] //Default
         public IActionResult Index()
         {
+            //Because the Key and Property are the Same , the Second will override the first [Because Both are stored in the Same Dictionary]
+            ViewData["Message"] = new DepartmentDto() { Name = "TestViewData"};
+            ViewBag.Message = new DepartmentDto() { Name = "TestViewBag"};
+
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
         }
