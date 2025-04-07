@@ -27,7 +27,14 @@ namespace Demo.DataAccess.Repositories.Classes
                                             .Select(selector).ToList();        //ToList() to let it be Immidiate Execution
         }
 
-        public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);  //Find() takes a PK as a parameter
+		public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+		{
+			return _dbContext.Set<TEntity>()
+                             .Where(predicate)
+                             .ToList();
+		}
+
+		public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);  //Find() takes a PK as a parameter
 
         public int Remove(TEntity entity)
         {

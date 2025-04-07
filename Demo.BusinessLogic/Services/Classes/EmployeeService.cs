@@ -37,11 +37,10 @@ namespace Demo.BusinessLogic.Services.Classes
             }
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
-        {
-            var employees = _employeeRepository.GetAll();
+		public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName)
+		{
 
-			#region Using 2nd Overload of GetAll()
+			#region Using 3rd Overload of GetAll() [selector]
 			//var employeesDto = _employeeRepository.GetAll(E => new EmployeeDto()
 			//{
 			//    Id = E.Id,
@@ -51,14 +50,20 @@ namespace Demo.BusinessLogic.Services.Classes
 			//}).Where(E => E.Age > 25); // IEnumerable Where() => Filteration on the returned Result in the Memory 
 			#endregion
 
+			IEnumerable<Employee> employees;
+			if (string.IsNullOrWhiteSpace(EmployeeSearchName))
+				employees = _employeeRepository.GetAll();
+			else
+				employees = _employeeRepository.GetAll(E => E.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+
 			//Source => Employee
 			//Destination => EmployeeDto
 			var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
 
 			return employeesDto;
-        }
+		}
 
-        public EmployeeDetailsDto? GetEmployeeById(int id)
+		public EmployeeDetailsDto? GetEmployeeById(int id)
         {
             var employee = _employeeRepository.GetById(id);
             return employee is not null ? _mapper.Map<Employee, EmployeeDetailsDto>(employee) : null;
