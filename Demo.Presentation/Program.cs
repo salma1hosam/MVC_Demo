@@ -41,6 +41,7 @@ namespace Demo.Presentation
 
 			builder.Services.AddScoped<IEmployeeRepository , EmployeeRepository>();
 			builder.Services.AddScoped<IEmployeeService , EmployeeService>();
+			builder.Services.AddScoped<IUnitOfWork ,  UnitOfWork>();
 
             //Registering AutoMapper
             builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly); //Gets the Assembly that contains the Mapping Profiles (if it's public)
