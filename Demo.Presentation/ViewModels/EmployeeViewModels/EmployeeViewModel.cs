@@ -2,10 +2,9 @@
 using Demo.DataAccess.Models.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
-
-namespace Demo.BusinessLogic.DataTransferObjects.Employee
+namespace Demo.Presentation.ViewModels.EmployeeViewModels
 {
-    public class CreatedEmployeeDto
+    public class EmployeeViewModel
     {
         [Required(ErrorMessage = "Name Can't Be Null")] //Use it with yhe non-nullable field when you need to display an Error Message
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
@@ -37,6 +36,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Employee
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
 
+        [Display(Name = "Department")]
         public int? DepartmentId { get; set; }
     }
 }

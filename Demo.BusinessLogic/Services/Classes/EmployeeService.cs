@@ -10,60 +10,71 @@ namespace Demo.BusinessLogic.Services.Classes
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly IMapper _mapper;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _employeeRepository = employeeRepository;
-            _mapper = mapper;
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
         }
 
         public int CreateEmployee(CreatedEmployeeDto createdEmployeeDto)
         {
             var employee = _mapper.Map<CreatedEmployeeDto, Employee>(createdEmployeeDto);
-            return _employeeRepository.Add(employee);
+            _unitOfWork.EmployeeRepository.Add(employee);  //Add Locally
+            return _unitOfWork.SaveChanges();
         }
 
 
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id);
             if (employee is null) return false;
             else
             {
                 employee.IsDeleted = true;
-                return _employeeRepository.Update(employee) > 0 ? true : false;
-            }
+                _unitOfWork.EmployeeRepository.Update(employee);
+                return _unitOfWork.SaveChanges() > 0 ? true : false;
+			}
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
+		public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName)
+		{
+
+			#region Using 3rd Overload of GetAll() [selector]
+			//var employeesDto = _employeeRepository.GetAll(E => new EmployeeDto()
+			//{
+			//    Id = E.Id,
+			//    Name = E.Name,
+			//    Age = E.Age,
+			//    Salary = E.Salary
+			//}).Where(E => E.Age > 25); // IEnumerable Where() => Filteration on the returned Result in the Memory 
+			#endregion
+
+			IEnumerable<Employee> employees;
+			if (string.IsNullOrWhiteSpace(EmployeeSearchName))
+				employees = _unitOfWork.EmployeeRepository.GetAll();
+			else
+				employees = _unitOfWork.EmployeeRepository.GetAll(E => E.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+
+			//Source => Employee
+			//Destination => EmployeeDto
+			var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
+
+			return employeesDto;
+		}
+
+		public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-            var employeesDto = _employeeRepository.GetAll(E => new EmployeeDto()
-            {
-                Id = E.Id,
-                Name = E.Name,
-                Age = E.Age,
-                Salary = E.Salary
-            }).Where(E => E.Age > 25); // IEnumerable Where() => Filteration on the returned Result in the Memory
-
-
-            //Source => Employee
-            //Destination => EmployeeDto
-            //var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
-
-            return employeesDto;
-        }
-
-        public EmployeeDetailsDto? GetEmployeeById(int id)
-        {
-            var employee = _employeeRepository.GetById(id);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id);
             return employee is not null ? _mapper.Map<Employee, EmployeeDetailsDto>(employee) : null;
         }
 
         public int UpdateEmployee(UpdatedEmployeeDto updatedEmployeeDto)
         {
-            return _employeeRepository.Update(_mapper.Map<UpdatedEmployeeDto, Employee>(updatedEmployeeDto));
+            _unitOfWork.EmployeeRepository.Update(_mapper.Map<UpdatedEmployeeDto, Employee>(updatedEmployeeDto));
+            return _unitOfWork.SaveChanges();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace Demo.Presentation
 				//options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"]);  //Used to get any Section in the appsettings.json
 				
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  //Most Used
+				options.UseLazyLoadingProxies();
 			});
 
 			builder.Services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //2.Registeration
@@ -40,6 +41,7 @@ namespace Demo.Presentation
 
 			builder.Services.AddScoped<IEmployeeRepository , EmployeeRepository>();
 			builder.Services.AddScoped<IEmployeeService , EmployeeService>();
+			builder.Services.AddScoped<IUnitOfWork ,  UnitOfWork>();
 
             //Registering AutoMapper
             builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly); //Gets the Assembly that contains the Mapping Profiles (if it's public)
