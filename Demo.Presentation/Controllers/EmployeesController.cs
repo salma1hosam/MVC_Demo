@@ -45,7 +45,8 @@ namespace Demo.Presentation.Controllers
                         IsActived = employeeViewModel.IsActived,
                         EmployeeType = employeeViewModel.EmployeeType,
                         Gender = employeeViewModel.Gender,
-                        DepartmentId = employeeViewModel.DepartmentId
+                        DepartmentId = employeeViewModel.DepartmentId,
+                        Image = employeeViewModel.Image
                     };
                     int returnedRows = _employeeService.CreateEmployee(createdEmployeeDto);
                     if (returnedRows > 0)

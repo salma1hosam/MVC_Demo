@@ -25,6 +25,10 @@ namespace Demo.BusinessLogic.Services.Classes
         public int CreateEmployee(CreatedEmployeeDto createdEmployeeDto)
         {
             var employee = _mapper.Map<CreatedEmployeeDto, Employee>(createdEmployeeDto);
+
+			if (createdEmployeeDto.Image is not null)
+				employee.ImageName = _attachmentService.Upload(createdEmployeeDto.Image, "Images");
+
             _unitOfWork.EmployeeRepository.Add(employee);  //Add Locally
             return _unitOfWork.SaveChanges();
         }
