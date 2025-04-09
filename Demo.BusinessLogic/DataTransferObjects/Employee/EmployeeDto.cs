@@ -23,5 +23,8 @@ namespace Demo.BusinessLogic.DataTransferObjects.Employee
         public string EmpType { get; set; }
 
         public string? Department { get; set; }
+
+        [Display(Name = "Image")]
+        public string? ImageName { get; set; }
     }
 }
