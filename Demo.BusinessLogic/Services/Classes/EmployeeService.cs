@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Demo.BusinessLogic.DataTransferObjects.Employee;
 using Demo.BusinessLogic.Factories;
+using Demo.BusinessLogic.Services.AttachmentService;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Models.EmployeeModel;
 using Demo.DataAccess.Repositories.Interfaces;
@@ -12,12 +13,14 @@ namespace Demo.BusinessLogic.Services.Classes
     {
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
+		private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
+		public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper , IAttachmentService attachmentService)
         {
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
-        }
+			_attachmentService = attachmentService;
+		}
 
         public int CreateEmployee(CreatedEmployeeDto createdEmployeeDto)
         {
