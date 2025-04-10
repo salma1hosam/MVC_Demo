@@ -6,7 +6,7 @@ namespace Demo.Presentation.ViewModels.EmployeeViewModels
 {
     public class EmployeeViewModel
     {
-        [Required(ErrorMessage = "Name Can't Be Null")] //Use it with yhe non-nullable field when you need to display an Error Message
+        [Required(ErrorMessage = "Name Can't Be Null")] //Use it with the non-nullable field when you need to display an Error Message
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
         [MinLength(5, ErrorMessage = "Min length should be 5 characters")]
         public string Name { get; set; } = null!;
@@ -40,5 +40,6 @@ namespace Demo.Presentation.ViewModels.EmployeeViewModels
         public int? DepartmentId { get; set; }
 
         public IFormFile? Image { get; set; }
+        public string? ImageName { get; set; }
     }
 }

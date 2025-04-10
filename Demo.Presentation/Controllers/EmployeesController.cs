@@ -98,7 +98,8 @@ namespace Demo.Presentation.Controllers
                 HiringDate = employee.HiringDate,
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
                 Gender = Enum.Parse<Gender>(employee.Gender),
-                DepartmentId = employee.DepartmentId
+                DepartmentId = employee.DepartmentId,
+                ImageName = employee.ImageName
             };
 
             return View(employeeViewModel);
@@ -124,7 +125,8 @@ namespace Demo.Presentation.Controllers
                     IsActived = employeeViewModel.IsActived,
                     EmployeeType = employeeViewModel.EmployeeType,
                     Gender = employeeViewModel.Gender,
-                    DepartmentId = employeeViewModel.DepartmentId
+                    DepartmentId = employeeViewModel.DepartmentId,
+                    Image = employeeViewModel.Image
                 };
                 int returnedRows = _employeeService.UpdateEmployee(updatedEmployeeDto);
                 if (returnedRows > 0)

@@ -80,7 +80,25 @@ namespace Demo.BusinessLogic.Services.Classes
 
         public int UpdateEmployee(UpdatedEmployeeDto updatedEmployeeDto)
         {
-            _unitOfWork.EmployeeRepository.Update(_mapper.Map<UpdatedEmployeeDto, Employee>(updatedEmployeeDto));
+            var employee = _unitOfWork.EmployeeRepository.GetById(updatedEmployeeDto.Id);
+
+            //var mappedEmployee = _mapper.Map<UpdatedEmployeeDto, Employee>(updatedEmployeeDto);
+
+            if (updatedEmployeeDto.Image is not null)
+            {
+                bool flag;
+                if (!string.IsNullOrEmpty(employee.ImageName) && employee.ImageName != "No Image")
+                {
+                    flag = _attachmentService.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\Images", employee.ImageName));
+                    if (!flag)
+                        employee.ImageName = "No Image";
+                }
+
+                _mapper.Map(updatedEmployeeDto , employee);
+                employee.ImageName = _attachmentService.Upload(updatedEmployeeDto.Image, "Images");
+            }
+
+            _unitOfWork.EmployeeRepository.Update(employee); ;
             return _unitOfWork.SaveChanges();
         }
     }
