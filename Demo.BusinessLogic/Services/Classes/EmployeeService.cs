@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Demo.BusinessLogic.DataTransferObjects.Employee;
 using Demo.BusinessLogic.Factories;
+using Demo.BusinessLogic.Services.AttachmentService;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Models.EmployeeModel;
 using Demo.DataAccess.Repositories.Interfaces;
@@ -12,16 +13,22 @@ namespace Demo.BusinessLogic.Services.Classes
     {
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
+		private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
+		public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper , IAttachmentService attachmentService)
         {
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
-        }
+			_attachmentService = attachmentService;
+		}
 
         public int CreateEmployee(CreatedEmployeeDto createdEmployeeDto)
         {
             var employee = _mapper.Map<CreatedEmployeeDto, Employee>(createdEmployeeDto);
+
+			if (createdEmployeeDto.Image is not null)
+				employee.ImageName = _attachmentService.Upload(createdEmployeeDto.Image, "Images");
+
             _unitOfWork.EmployeeRepository.Add(employee);  //Add Locally
             return _unitOfWork.SaveChanges();
         }
@@ -73,7 +80,25 @@ namespace Demo.BusinessLogic.Services.Classes
 
         public int UpdateEmployee(UpdatedEmployeeDto updatedEmployeeDto)
         {
-            _unitOfWork.EmployeeRepository.Update(_mapper.Map<UpdatedEmployeeDto, Employee>(updatedEmployeeDto));
+            var employee = _unitOfWork.EmployeeRepository.GetById(updatedEmployeeDto.Id);
+
+            //var mappedEmployee = _mapper.Map<UpdatedEmployeeDto, Employee>(updatedEmployeeDto);
+
+            if (updatedEmployeeDto.Image is not null)
+            {
+                bool flag;
+                if (!string.IsNullOrEmpty(employee.ImageName) && employee.ImageName != "No Image")
+                {
+                    flag = _attachmentService.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\Images", employee.ImageName));
+                    if (!flag)
+                        employee.ImageName = "No Image";
+                }
+
+                _mapper.Map(updatedEmployeeDto , employee);
+                employee.ImageName = _attachmentService.Upload(updatedEmployeeDto.Image, "Images");
+            }
+
+            _unitOfWork.EmployeeRepository.Update(employee); ;
             return _unitOfWork.SaveChanges();
         }
     }

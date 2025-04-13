@@ -24,5 +24,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Employee
 
         public int? DepartmentId { get; set; }
         public string? Department { get; set; }
+
+        public string? ImageName { get; set; }
     }
 }
