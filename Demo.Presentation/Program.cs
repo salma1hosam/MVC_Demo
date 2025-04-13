@@ -26,6 +26,7 @@ namespace Demo.Presentation
 				options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 			});
 
+			#region Registering DbContext
 			//builder.Services.AddScoped<ApplicationDbContext>();  //2.Register to Service in the DI Container
 
 			//Another way to register the DbContext service with configuring the DBContextOptions
@@ -37,7 +38,8 @@ namespace Demo.Presentation
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  //Most Used
 
 				options.UseLazyLoadingProxies();
-			});
+			}); 
+			#endregion
 
 			builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); //2.Registeration
 			builder.Services.AddScoped<IDepartmentService, DepartmentService>();
@@ -90,6 +92,7 @@ namespace Demo.Presentation
 
 			app.UseRouting();  //Map the request to route of the routes in the Routing Table
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.MapControllerRoute(

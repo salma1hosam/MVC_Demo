@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Presentation.Controllers
 {
-    public class AccountController(UserManager<ApplicationUser> _userManager) : Controller
+    public class AccountController(UserManager<ApplicationUser> _userManager , SignInManager<ApplicationUser> _signInManager) : Controller
     {
         #region Register
         
@@ -38,5 +38,38 @@ namespace Demo.Presentation.Controllers
             }
         }
         #endregion
+
+        #region Sign In
+
+        [HttpGet]
+        public IActionResult LogIn() => View();
+
+        [HttpPost]
+        public IActionResult Login(LoginViewModel loginViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _userManager.FindByEmailAsync(loginViewModel.Email).Result;
+                if (user is not null)
+                {
+                    var result = _signInManager.CheckPasswordSignInAsync(user, loginViewModel.Password, false).Result;
+                    if (result.Succeeded)
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                    else
+                        ModelState.AddModelError(string.Empty, "Invalid Login");
+
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Invalid Login");
+            return View(loginViewModel);
+        }
+        #endregion
+
+        [HttpGet]
+        public ActionResult SignOut()
+        {
+            _signInManager.SignOutAsync().GetAwaiter().GetResult();
+            return RedirectToAction(nameof(Login));
+        }
     }
 }
