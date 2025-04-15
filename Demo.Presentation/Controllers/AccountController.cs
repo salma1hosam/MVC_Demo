@@ -91,11 +91,18 @@ namespace Demo.Presentation.Controllers
                 var user = _userManager.FindByEmailAsync(forgetPasswordViewModel.Email).Result;
                 if (user is not null)
                 {
+                    var token = _userManager.GeneratePasswordResetTokenAsync(user).Result; //Generated Token valid for one time
+
+                    //BaseUrl/Account/ResetPassword?email=salma@gmail.com&Token=
+                    var resetPasswordLink = Url.Action("ResetPassword",
+                                                      "Account",
+                                                      new { email = forgetPasswordViewModel.Email , token },
+                                                      Request.Scheme);  //Schema => gets the schema(protocol , host , port)(BaseUrl) of the request to the SendResetPasswordLink Action
                     var email = new Email()
                     {
                         To = forgetPasswordViewModel.Email,
                         Subject = "Reset Password",
-                        Body = "Reset Password Link" //TO DO
+                        Body = resetPasswordLink
                     };
 
                     //Send Email
@@ -104,11 +111,41 @@ namespace Demo.Presentation.Controllers
                 }
             }
             ModelState.AddModelError(string.Empty, "Invalid Operation");
-            return View(nameof(ForgetPassword),forgetPasswordViewModel);
+            return View(nameof(ForgetPassword), forgetPasswordViewModel);
         }
 
         [HttpGet]
         public IActionResult CheckYourInbox() => View();
-        #endregion
-    }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email , string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+		public IActionResult ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+		{
+			if (!ModelState.IsValid) return View(resetPasswordViewModel);
+
+			string email = TempData["email"] as string ?? string.Empty;
+			string token = TempData["token"] as string ?? string.Empty;
+
+			var user = _userManager.FindByEmailAsync(email).Result;
+
+			if (user is not null)
+			{
+				var result = _userManager.ResetPasswordAsync(user , token , resetPasswordViewModel.Password).Result;
+				if (result.Succeeded)
+					return RedirectToAction(nameof(Login));
+				else
+					foreach (var error in result.Errors)
+						ModelState.AddModelError(string.Empty, error.Description);
+			}
+			return View(nameof(ResetPassword), resetPasswordViewModel);
+		}
+		#endregion
+	}
 }

@@ -61,8 +61,8 @@ namespace Demo.Presentation
 
 			//Registering the Identity Services
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-							.AddEntityFrameworkStores<ApplicationDbContext>(); //To Allow the Identity services Implementations , Specify the DbContext
-
+							.AddEntityFrameworkStores<ApplicationDbContext>() //To Allow the Identity services Implementations , Specify the DbContext
+							.AddDefaultTokenProviders();
 			#region To change the the Configuration (for ex of user or Password)
 			//builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 			//{
