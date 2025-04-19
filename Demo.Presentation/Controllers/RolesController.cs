@@ -114,5 +114,55 @@ namespace Demo.Presentation.Controllers
 			};
 			return View(roleViewModel);
 		}
+
+		#region Delete Role
+
+		[HttpGet]
+		public IActionResult Delete(string? id)
+		{
+			if (id.IsNullOrEmpty()) return BadRequest();
+			var role = _roleManager.FindByIdAsync(id).Result;
+			if (role is null) return NotFound();
+			var roleViewModel = new RoleViewModel()
+			{
+				Id = id,
+				RoleName = role.Name
+			};
+			return View(roleViewModel);
+		}
+
+		[HttpPost]
+		public IActionResult Remove(string id)
+		{
+			if (id.IsNullOrEmpty()) return BadRequest();
+			try
+			{
+				var role = _roleManager.FindByIdAsync(id).Result;
+				if (role is null) return NotFound();
+				var result = _roleManager.DeleteAsync(role).Result;
+				if (result.Succeeded)
+					return RedirectToAction(nameof(Index));
+				else
+				{
+					foreach (var error in result.Errors)
+						ModelState.AddModelError(string.Empty, error.Description);
+					return RedirectToAction(nameof(Delete), new { Id = id });
+				}
+			}
+			catch (Exception ex)
+			{
+				if (_environment.IsDevelopment())
+				{
+					ModelState.AddModelError(string.Empty, ex.Message);
+					return RedirectToAction(nameof(Delete), new { Id = id });
+				}
+				else
+				{
+					_logger.LogError(ex.Message);
+					return View("ErrorView", ex);
+				}
+			}
+		}
+		#endregion
 	}
 }
