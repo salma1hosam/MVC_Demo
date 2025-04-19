@@ -10,9 +10,11 @@ namespace Demo.Presentation.Controllers
 {
 	public class RolesController(RoleManager<IdentityRole> _roleManager, ILogger<RolesController> _logger, IWebHostEnvironment _environment) : Controller
 	{
-		public IActionResult Index()
+		public IActionResult Index(string? RoleSearchName)
 		{
-			var roles = _roleManager.Roles.ToList();
+			var roles = _roleManager.Roles;
+			if (!RoleSearchName.IsNullOrEmpty())
+				roles = roles.Where(R => R.Name.ToLower().Contains(RoleSearchName.ToLower()));
 			var rolesViewModel = new List<RoleViewModel>();
 			foreach (var role in roles)
 			{
