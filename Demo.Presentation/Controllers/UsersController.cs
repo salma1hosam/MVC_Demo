@@ -11,22 +11,23 @@ namespace Demo.Presentation.Controllers
 	public class UsersController(UserManager<ApplicationUser> _userManager , ILogger<UsersController> _logger , IWebHostEnvironment _environment) : Controller
 	{
 		[HttpGet]
-		public IActionResult Index()
+		public IActionResult Index(string? UserSearchName)
 		{
-			var users = _userManager.Users.ToList();			
-			List<UserViewModel> usersViewModel = [];
+			var users = _userManager.Users;
+			if (!UserSearchName.IsNullOrEmpty())
+				users = users.Where(U => U.FirstName.ToLower().Contains(UserSearchName.ToLower()));
+			var usersViewModel = new List<UserViewModel>();
 			foreach (var user in users)
 			{
-				var viewModel = new UserViewModel
+				var viewModel = new UserViewModel()
 				{
 					Id = user.Id,
 					FirstName = user.FirstName,
 					LastName = user.LastName,
 					Email = user.Email,
 					PhoneNumber = user.PhoneNumber
-					// Role
+					//Role
 				};
-
 				usersViewModel.Add(viewModel);
 			}
 			return View(usersViewModel);
