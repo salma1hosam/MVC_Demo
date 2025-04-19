@@ -87,5 +87,22 @@ namespace Demo.Presentation.Controllers
 			}
 		}
 		#endregion
+
+		[HttpGet]
+		public IActionResult Details(string? id)
+		{
+			if (id.IsNullOrEmpty()) return BadRequest();
+			var user = _userManager.FindByIdAsync(id).Result;
+			if (user is null) return NotFound();
+			var userViewModel = new UserDetailsViewModel()
+			{
+				Id = id,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				PhoneNumber = user.PhoneNumber,
+				Email = user.Email
+			};
+			return View(userViewModel);
+		}
 	}
 }
