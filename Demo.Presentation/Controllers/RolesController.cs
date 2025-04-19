@@ -101,5 +101,18 @@ namespace Demo.Presentation.Controllers
 			}
 		}
 		#endregion
+
+		public IActionResult Details(string? id)
+		{
+			if (id.IsNullOrEmpty()) return BadRequest();
+			var role = _roleManager.FindByIdAsync(id).Result;
+			if (role is null) return NotFound();
+			var roleViewModel = new RoleViewModel()
+			{
+				Id = id,
+				RoleName = role.Name
+			};
+			return View(roleViewModel);
+		}
 	}
 }
