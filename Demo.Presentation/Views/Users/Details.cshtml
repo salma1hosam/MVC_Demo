@@ -1,0 +1,19 @@
+﻿@model UserDetailsViewModel
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center align-content-center mt-3">
+	<h1 class="col-8 my-4">User @Model.FirstName @Model.LastName Details</h1>
+	<form method="get" asp-controller="Users" asp-action="Edit" class="row col-8" enctype="multipart/form-data">
+
+		<partial name="PartialViews/_DetailsDeletePartialView" />
+
+		<div class="mt-4 m-auto">
+			<input class="btn btn-warning" type="submit" value="Edit" />
+			<a asp-controller="Users" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
+		</div>
+	</form>
+</div>
+
